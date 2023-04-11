@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'LabelApp.apps.LabelappConfig',
     'TeamApp.apps.TeamappConfig',
     'TaskApp.apps.TaskappConfig',
+    'Notification.apps.NotificationConfig',
 ]
 
 AUTH_USER_MODEL =  'AppUsers.AppUsers'  #mine

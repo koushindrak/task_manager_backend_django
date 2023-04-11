@@ -10,7 +10,7 @@ class Teams(BaseModel):
     name = models.CharField(max_length=50)
     status = models.CharField(max_length=8, choices=EntityStatus.choices,
                               default=EntityStatus.ACTIVE)  # ACTIVE or INACTIVE
-    users = models.ManyToManyField(AppUsers, related_name="teams")
+    users = models.ManyToManyField(AppUsers, related_name="_teams")
 
     class Meta:
         db_table = 'teams'
