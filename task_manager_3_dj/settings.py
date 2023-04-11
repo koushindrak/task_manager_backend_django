@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'task_manager3.apps.TaskManager3Config',
     'AppUsers.apps.AppusersConfig',
-    'LoginApp.apps.LoginappConfig'
+    'LoginApp.apps.LoginappConfig',
+    'ProjectApp.apps.ProjectappConfig',
 ]
 
 AUTH_USER_MODEL =  'AppUsers.AppUsers'  #mine
@@ -119,6 +120,7 @@ DATABASES = {
     }
 }
 
+#NEWCUSTOM
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
