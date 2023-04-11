@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
+from django.urls import include, path
 from LoginApp.views import CustomTokenObtainPairView
 
 urlpatterns = [
@@ -28,5 +28,8 @@ urlpatterns = [
 
     # Refresh JWT token pair
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('', include('ProjectApp.urls')),
+
 ]
 
