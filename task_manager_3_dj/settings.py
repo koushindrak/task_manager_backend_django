@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'LoginApp.apps.LoginappConfig',
     'ProjectApp.apps.ProjectappConfig',
     'LabelApp.apps.LabelappConfig',
+    'TeamApp.apps.TeamappConfig',
 ]
 
 AUTH_USER_MODEL =  'AppUsers.AppUsers'  #mine
