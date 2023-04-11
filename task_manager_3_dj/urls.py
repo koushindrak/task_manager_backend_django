@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('ProjectApp.urls')),
     path('', include('LabelApp.urls')),
     path('', include('TeamApp.urls')),
-    path('',include('TaskApp.urls'))
+    path('',include('TaskApp.urls')),
+    path('',include('Notification.urls')),
 ]
 

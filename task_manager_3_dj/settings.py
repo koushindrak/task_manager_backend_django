@@ -116,7 +116,7 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'taskmanager3',
+        'NAME': 'taskmanager',
         'USER': 'root',
         'PASSWORD': 'root@123',
         'HOST': 'localhost',
