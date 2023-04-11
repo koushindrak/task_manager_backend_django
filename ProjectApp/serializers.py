@@ -5,4 +5,5 @@ from ProjectApp.models import Projects
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Projects
-        fields = '__all__'
+        exclude = ('user',)
+        # fields = '__all__'
