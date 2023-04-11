@@ -29,10 +29,13 @@ urlpatterns = [
     # Refresh JWT token pair
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
 
+    path('',include('AppUsers.urls')),
     path('', include('ProjectApp.urls')),
     path('', include('LabelApp.urls')),
     path('', include('TeamApp.urls')),
     path('',include('TaskApp.urls')),
     path('',include('Notification.urls')),
+    path('', include('CommentApp.urls')),
+
 ]
 

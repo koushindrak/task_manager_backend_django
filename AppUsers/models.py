@@ -18,5 +18,15 @@ class AppUsers(AbstractUser, BaseModel):
     class Meta:
         db_table = 'users'
 
+    @classmethod
+    def create_user(cls, email, username, password):
+        user = cls.objects.create(
+            email=email,
+            username=username,
+        )
+        user.set_password(password)
+        user.save()
+        return user
+
     def __str__(self):
         return self.username

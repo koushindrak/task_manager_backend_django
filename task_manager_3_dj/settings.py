@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'TeamApp.apps.TeamappConfig',
     'TaskApp.apps.TaskappConfig',
     'Notification.apps.NotificationConfig',
+    'CommentApp.apps.CommentappConfig',
 ]
 
 AUTH_USER_MODEL =  'AppUsers.AppUsers'  #mine
