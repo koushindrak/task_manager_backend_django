@@ -37,13 +37,12 @@ def get_team(request, pk):
 def create_team(request):
     logging.info(f"######## Creating Team:  {request}")
 
-    serializer = TeamSerializer(data=request.data)
+    serializer = TeamSerializer(data=request.data, context={'user': request.user})
     if serializer.is_valid():
-        team = serializer.save()
+        team = serializer.save(created_by=request.user.username, updated_by=request.user.username)
         team.users.add(request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -55,10 +54,11 @@ def update_team(request, pk):
     except Teams.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = TeamSerializer(team, data=request.data)
+    serializer = TeamSerializer(team, data=request.data,context={'user': request.user})
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
+        team = serializer.save(created_by=request.user.username, updated_by=request.user.username)
+        team.users.add(request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
