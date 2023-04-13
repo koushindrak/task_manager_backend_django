@@ -23,26 +23,19 @@ from rest_framework import serializers
 from datetime import timedelta
 import time
 
+
 class TaskRequestSerializer(serializers.ModelSerializer):
-    due_date = serializers.DateTimeField(required=False)
-    team = serializers.PrimaryKeyRelatedField(queryset=Teams.objects.all(), required=False)
-    project = serializers.PrimaryKeyRelatedField(queryset=Projects.objects.all(), required=False)
-    labels = serializers.PrimaryKeyRelatedField(queryset=Labels.objects.all(), many=True, required=False)
+    due_date = UnixTimestampField(required=False)
+    project_id = serializers.IntegerField()
 
     class Meta:
         model = Tasks
-        exclude = ('user',)
+        fields = ['id', 'name', 'description', 'due_date', 'status', 'priority', 'project_id']
 
-    def validate(self, attrs):
-        attrs['name'] = attrs.get('name', None)
-        if not attrs['name']:
-            raise serializers.ValidationError("The 'name' field is mandatory.")
-
-        attrs['description'] = attrs.get('description', None)
-        attrs['due_date'] = attrs.get('due_date', None) or time.time() + 24*60*60*1000
-        attrs['status'] = attrs.get('status', None) or 'TODO'
-        attrs['priority'] = attrs.get('priority', None) or 'MEDIUM'
-        return attrs
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data['user'] = user
+        return super().create(validated_data)
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -53,6 +46,23 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tasks
         exclude = ('user',)
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Projects
+        fields = ['id', 'name']
+
+
+class TaskResponseSerializer2(serializers.ModelSerializer):
+    # project = ProjectSerializer()
+    project_id = serializers.IntegerField(source='project.id', allow_null=True)
+    project_name = serializers.CharField(source='project.name', allow_null=True)
+
+    class Meta:
+        model = Tasks
+        fields = ['id', 'name', 'status', 'description', 'due_date', 'description', 'project_id', 'project_name',
+                  'labels']
 
 
 class TaskResponseSerializer(serializers.ModelSerializer):
@@ -66,13 +76,13 @@ class TaskResponseSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['teamId'] = data['team']['id'] if data['team'] else None
-        data['teamName'] = data['team']['name'] if data['team'] else None
-        data['projectId'] = data['project']['id'] if data['project'] else None
-        data['projectName'] = data['project']['name'] if data['project'] else None
-        data['labels'] = [{"id": label['id'], "name": label['name']} for label in data['labels']]
-
-        data.pop('team')
-        data.pop('project')
+        # data['team_id'] = data['team']['id'] if data['team'] else None
+        # data['team_name'] = data['team']['name'] if data['team'] else None
+        # data['project_id'] = data['project']['id'] if data['project'] else None
+        # data['project_name'] = data['project']['name'] if data['project'] else None
+        # data['labels'] = [{"id": label['id'], "name": label['name']} for label in data['labels']]
+        #
+        # data.pop('team')
+        # data.pop('project')
 
         return data

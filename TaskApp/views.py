@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import TaskSerializer, TaskResponseSerializer, TaskRequestSerializer
+from .serializers import TaskSerializer, TaskResponseSerializer, TaskRequestSerializer, TaskResponseSerializer2
 from .models import Tasks
 
 
@@ -12,7 +12,7 @@ from .models import Tasks
 def get_all_tasks(request):
     logging.info("######## Getting All Tasks")
     tasks = Tasks.objects.filter(user=request.user)
-    serializer = TaskResponseSerializer(tasks, many=True)
+    serializer = TaskResponseSerializer2(tasks, many=True)
     return Response(serializer.data)
 
 
@@ -32,10 +32,9 @@ def get_task(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_task(request):
-    logging.info(f"######## Creating Task:  {request}")
-    serializer = TaskRequestSerializer(data=request.data)
+    serializer = TaskRequestSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
-        serializer.save(user=request.user)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
