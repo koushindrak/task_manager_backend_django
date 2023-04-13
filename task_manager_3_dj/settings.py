@@ -62,6 +62,7 @@ INSTALLED_APPS = [
 
     #NEW
     'pydantic',
+    'corsheaders',
     'rest_framework',
     'task_manager3.apps.TaskManager3Config',
     'AppUsers.apps.AppusersConfig',
@@ -75,9 +76,12 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL =  'AppUsers.AppUsers'  #mine
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

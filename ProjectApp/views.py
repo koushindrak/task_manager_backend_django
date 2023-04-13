@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, ProjectRequestSerializer
 
 from .models import Projects
 
@@ -37,7 +37,7 @@ def get_project(request, pk):
 def create_project(request):
     logging.info(f"######## Creating Project:  {request}")
 
-    serializer = ProjectSerializer(data=request.data)
+    serializer = ProjectRequestSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -54,7 +54,7 @@ def update_project(request, pk):
     except Projects.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = ProjectSerializer(project, data=request.data)
+    serializer = ProjectRequestSerializer(project, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)

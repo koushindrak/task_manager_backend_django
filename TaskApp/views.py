@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, TaskResponseSerializer, TaskRequestSerializer
 from .models import Tasks
 
 
@@ -12,7 +12,7 @@ from .models import Tasks
 def get_all_tasks(request):
     logging.info("######## Getting All Tasks")
     tasks = Tasks.objects.filter(user=request.user)
-    serializer = TaskSerializer(tasks, many=True)
+    serializer = TaskResponseSerializer(tasks, many=True)
     return Response(serializer.data)
 
 
@@ -25,7 +25,7 @@ def get_task(request, pk):
     except Tasks.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = TaskSerializer(task)
+    serializer = TaskResponseSerializer(task)
     return Response(serializer.data)
 
 
@@ -33,7 +33,7 @@ def get_task(request, pk):
 @permission_classes([IsAuthenticated])
 def create_task(request):
     logging.info(f"######## Creating Task:  {request}")
-    serializer = TaskSerializer(data=request.data)
+    serializer = TaskRequestSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -49,7 +49,7 @@ def update_task(request, pk):
     except Tasks.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = TaskSerializer(task, data=request.data)
+    serializer = TaskRequestSerializer(task, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
