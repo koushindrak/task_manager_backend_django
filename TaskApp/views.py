@@ -25,7 +25,7 @@ def get_task(request, pk):
     except Tasks.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = TaskResponseSerializer(task)
+    serializer = TaskResponseSerializer2(task)
     return Response(serializer.data)
 
 
