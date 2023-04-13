@@ -20,7 +20,7 @@ def user_list(request):
 @api_view(['GET'])
 def user_detail(request, id):
     user = AppUsers.objects.get(id=id)
-    serializer = UserSerializer(user)
+    serializer = UserResponseSerializer(user)
     return Response(serializer.data)
 
 

@@ -1,4 +1,7 @@
 from rest_framework import serializers
+
+from TeamApp.models import Teams
+from TeamApp.serializers import TeamSerializer
 from .models import AppUsers
 
 
@@ -17,11 +20,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppUsers
-        fields = ('id', 'email', 'username', 'password','first_name','last_name')
+        fields = ('id', 'email', 'username', 'password', 'first_name', 'last_name')
+
+
+class TeamUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teams
+        fields = ['id', 'name']
 
 
 class UserResponseSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    teams = TeamUserSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
         user = AppUsers.objects.create_user(
@@ -35,4 +45,6 @@ class UserResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppUsers
-        fields = ('id', 'email', 'username', 'password','first_name','last_name','is_superuser', 'last_login','date_joined')
+        fields = (
+        'id', 'email', 'username', 'password', 'first_name', 'last_name', 'is_superuser', 'last_login', 'date_joined',
+        'teams')

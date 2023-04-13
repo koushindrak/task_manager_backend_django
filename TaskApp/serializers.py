@@ -21,8 +21,8 @@ class UnixTimestampField(serializers.Field):
 
 class TaskRequestSerializer(serializers.ModelSerializer):
     due_date = UnixTimestampField(required=False)
-    project_id = serializers.IntegerField(allow_null=True)
-    label_id = serializers.IntegerField(allow_null=True)
+    project_id = serializers.IntegerField(allow_null=True,required=False)
+    label_id = serializers.IntegerField(allow_null=True,required=False)
 
     class Meta:
         model = Tasks
