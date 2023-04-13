@@ -125,8 +125,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'taskmanager',
         'USER': 'root',
-        'PASSWORD': 'root@123',
-        'HOST': 'localhost',
+        'PASSWORD': 'root@975686',
+        'HOST': 'mysql-service',
         'PORT': '3306',
     }
 }
